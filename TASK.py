@@ -27,3 +27,4 @@ print("Classes:", sorted(set(y)))
 
 for digit in range(10):
     print(f"Number of digit {digit} images:", np.sum(y == digit))
+     #THIS PIECE of code lines 1-30 loads the digits dataset, converts into a 64 pixel value array and labels each image with its correct output value
