@@ -3,8 +3,8 @@ import numpy as np
 
 digits = load_digits()
 
-images = digits.images
-correct_value = digits.target
+images = digits.images #assigns each pixel a value
+correct_value = digits.target # conatins correct output associated w each img
 
 print("Image shape:", images.shape)
 print("Correct-value shape:", correct_value.shape)
@@ -19,11 +19,11 @@ X = images.reshape(images.shape[0], 64)
 X = X / 16.0
 
 # Keep the original digit labels: 0 through 9
-y = correct_value.astype(int)
+y = correct_value.astype(int) # ensure that correct_value is an integer, more of a safety feature here, code would work regardless
 
 print("\nPrepared input shape:", X.shape)
 print("Prepared answer shape:", y.shape)
-print("Classes:", sorted(set(y)))
+print("Classes:", sorted(set(y))) # labels all different outputs in coorect_values
 
 for digit in range(10):
     print(f"Number of digit {digit} images:", np.sum(y == digit))
