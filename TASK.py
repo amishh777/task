@@ -88,3 +88,30 @@ S = A1 @ W2 + b2
 
 print("\nOutput score shape:")
 print("S:", S.shape)
+
+
+def softmax(scores):
+    probabilities = np.zeros_like(scores)
+
+    for image_number in range(scores.shape[0]):
+        current_scores = scores[image_number]
+
+        biggest_score = np.max(current_scores)
+        shifted_scores = current_scores - biggest_score
+
+        exponential_scores = np.exp(shifted_scores)
+
+        total = np.sum(exponential_scores)
+
+        probabilities[image_number] = exponential_scores / total
+
+    return probabilities
+
+
+# Convert the 10 raw scores into 10 probabilities
+P = softmax(S)
+
+print("\nProbability shape:")
+print("P:", P.shape)
+print("First probability row:", P[0])
+print("First row total:", np.sum(P[0]))
