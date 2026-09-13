@@ -84,10 +84,10 @@ print("Z1:", Z1.shape)
 print("A1 after ReLU:", A1.shape)
 
 # Second-layer forward pass: produce one raw score for each digit
-S = A1 @ W2 + b2
+scores = A1 @ W2 + b2
 
 print("\nOutput score shape:")
-print("S:", S.shape)
+print("scores:", scores.shape)
 
 
 def softmax(scores):
@@ -109,7 +109,7 @@ def softmax(scores):
 
 
 # Convert the 10 raw scores into 10 probabilities
-P = softmax(S)
+P = softmax(scores)
 
 print("\nProbability shape:")
 print("P:", P.shape)
