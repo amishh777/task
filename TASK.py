@@ -82,3 +82,11 @@ print("W1:", W1.shape)
 print("b1:", b1.shape)
 print("W2:", W2.shape)
 print("b2:", b2.shape)
+
+# Hidden-layer forward pass
+Z1 = X_train @ W1 + b1
+A1 = np.maximum(0, Z1)
+
+print("\nHidden-layer output shapes:")
+print("Z1:", Z1.shape)
+print("A1 after ReLU:", A1.shape)
