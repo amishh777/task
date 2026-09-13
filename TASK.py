@@ -25,7 +25,7 @@ print("\nPrepared input shape:", X.shape)
 print("Prepared answer shape:", y.shape)
 print("Classes:", sorted(set(y))) # labels all different outputs in coorect_values
 
-for digit in range(10):
+for digit in range(0, 10, 1):
     print(f"Number of digit {digit} images:", np.sum(y == digit))
      #THIS PIECE of code lines 1-30 loads the digits dataset, converts into a 64 pixel value array and labels each image with its correct output value
 
@@ -93,7 +93,7 @@ print("scores:", scores.shape)
 def softmax(scores):
     probabilities = np.zeros_like(scores)
 
-    for image_number in range(scores.shape[0]):
+    for image_number in range(0, scores.shape[0], 1):
         current_scores = scores[image_number]
 
         biggest_score = np.max(current_scores)
