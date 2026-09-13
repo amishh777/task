@@ -58,24 +58,16 @@ input_size = X_train.shape[1]   # 64 pixels
 hidden_size = 32                # 32 hidden neurons
 output_size = 10                # digits 0 through 9
 
-# Create random values for the weights
+# Create random values for the weights associated with each neuron to pixel link
 parameter_random = np.random.default_rng(123)
 
-W1 = parameter_random.normal(
-    0,
-    np.sqrt(2.0 / input_size),
-    (input_size, hidden_size)
-)
+W1 = parameter_random.normal(0, np.sqrt(2.0 / input_size),(input_size, hidden_size))
 
-b1 = np.zeros(hidden_size)
+b1 = np.zeros(hidden_size) # weights and biases for pixels to first layer of neurons
 
-W2 = parameter_random.normal(
-    0,
-    np.sqrt(2.0 / hidden_size),
-    (hidden_size, output_size)
-)
+W2 = parameter_random.normal(0, np.sqrt(2.0 / hidden_size), (hidden_size, output_size))
 
-b2 = np.zeros(output_size)
+b2 = np.zeros(output_size) # weights and biasees for first to final layer
 
 print("\nNetwork parameter shapes:")
 print("W1:", W1.shape)
@@ -84,8 +76,8 @@ print("W2:", W2.shape)
 print("b2:", b2.shape)
 
 # Hidden-layer forward pass
-Z1 = X_train @ W1 + b1
-A1 = np.maximum(0, Z1)
+Z1 = X_train @ W1 + b1 #Matrix multiplication and addition of biases
+A1 = np.maximum(0, Z1) #Z1 after ReLU
 
 print("\nHidden-layer output shapes:")
 print("Z1:", Z1.shape)
