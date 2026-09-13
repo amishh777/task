@@ -52,3 +52,33 @@ print("\nTraining input shape:", X_train.shape)
 print("Training answer shape:", y_train.shape)
 print("Testing input shape:", X_test.shape)
 print("Testing answer shape:", y_test.shape)
+
+# Define the network size
+input_size = X_train.shape[1]   # 64 pixels
+hidden_size = 32                # 32 hidden neurons
+output_size = 10                # digits 0 through 9
+
+# Create random values for the weights
+parameter_random = np.random.default_rng(123)
+
+W1 = parameter_random.normal(
+    0,
+    np.sqrt(2.0 / input_size),
+    (input_size, hidden_size)
+)
+
+b1 = np.zeros(hidden_size)
+
+W2 = parameter_random.normal(
+    0,
+    np.sqrt(2.0 / hidden_size),
+    (hidden_size, output_size)
+)
+
+b2 = np.zeros(output_size)
+
+print("\nNetwork parameter shapes:")
+print("W1:", W1.shape)
+print("b1:", b1.shape)
+print("W2:", W2.shape)
+print("b2:", b2.shape)
