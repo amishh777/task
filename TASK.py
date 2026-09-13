@@ -17,6 +17,10 @@ X = images.reshape(images.shape[0], 64)
 
 # Scale pixel values from 0-16 to 0-1
 X = X / 16.0
+
+# Keep the original digit labels: 0 through 9
+y = correct_value.astype(int) # ensure that correct_value is an integer, more of a safety feature here, code would work regardless
+
 print("\nPrepared input shape:", X.shape)
 print("Prepared answer shape:", y.shape)
 print("Classes:", sorted(set(y))) # labels all different outputs in coorect_values
