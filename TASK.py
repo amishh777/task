@@ -17,10 +17,6 @@ X = images.reshape(images.shape[0], 64)
 
 # Scale pixel values from 0-16 to 0-1
 X = X / 16.0
-
-# Keep the original digit labels: 0 through 9
-y = correct_value.astype(int) # ensure that correct_value is an integer, more of a safety feature here, code would work regardless
-
 print("\nPrepared input shape:", X.shape)
 print("Prepared answer shape:", y.shape)
 print("Classes:", sorted(set(y))) # labels all different outputs in coorect_values
@@ -51,15 +47,15 @@ y_test = y[split_index:]
 print("\nTraining input shape:", X_train.shape)
 print("Training answer shape:", y_train.shape)
 print("Testing input shape:", X_test.shape)
-print("Testing answer shape:", y_test.shape)
+print("Testing answer shape:", y_test.shape) # line 47-50 just to make sure arrays for inputs and outputs are in correct dimensions
 
 # Define the network size
 input_size = X_train.shape[1]   # 64 pixels
-hidden_size = 32                # 32 hidden neurons
-output_size = 10                # digits 0 through 9
+hidden_size = 32                # 32 hidden neurons (layer1)
+output_size = 10                # digits 0 through 9 (output layer)
 
 # Create random values for the weights associated with each neuron to pixel link
-parameter_random = np.random.default_rng(123)
+parameter_random = np.random.default_rng(123) # the arguement '123' is used for reproducability of the reuslt obtained
 
 W1 = parameter_random.normal(0, np.sqrt(2.0 / input_size),(input_size, hidden_size))
 
@@ -83,7 +79,7 @@ print("\nHidden-layer output shapes:")
 print("Z1:", Z1.shape)
 print("A1 after ReLU:", A1.shape)
 
-# Second-layer forward pass: produce one raw score for each digit
+#score associated with each neuron in output layer, will be later converted into probability
 scores = A1 @ W2 + b2
 
 print("\nOutput score shape:")
@@ -91,7 +87,7 @@ print("scores:", scores.shape)
 
 
 def softmax(scores):
-    probabilities = np.zeros_like(scores)
+    probabilities = np.zeros_like(scores) # defining an array with same dimension as 'scores'
 
     for image_number in range(0, scores.shape[0], 1):
         current_scores = scores[image_number]
@@ -100,11 +96,14 @@ def softmax(scores):
         shifted_scores = current_scores - biggest_score
 
         exponential_scores = np.exp(shifted_scores)
-
+        # all shifted scores to e^shifted_scores
+        
         total = np.sum(exponential_scores)
-
+        # sum of all exponential scores for this image
+        
         probabilities[image_number] = exponential_scores / total
-
+        #updates for each image_number the probabilities of each digit in the array
+    
     return probabilities
 
 
@@ -112,6 +111,6 @@ def softmax(scores):
 P = softmax(scores)
 
 print("\nProbability shape:")
-print("P:", P.shape)
-print("First probability row:", P[0])
-print("First row total:", np.sum(P[0]))
+print("P:", P.shape) # verifying matrix dimesnions
+print("First probability row:", P[0]) 
+print("First row total:", np.sum(P[0])) # to verify if probabilty function is working coorectly
