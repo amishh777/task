@@ -82,3 +82,9 @@ A1 = np.maximum(0, Z1) #Z1 after ReLU
 print("\nHidden-layer output shapes:")
 print("Z1:", Z1.shape)
 print("A1 after ReLU:", A1.shape)
+
+# Second-layer forward pass: produce one raw score for each digit
+S = A1 @ W2 + b2
+
+print("\nOutput score shape:")
+print("S:", S.shape)
