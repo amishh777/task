@@ -54,13 +54,6 @@ W2 = parameter_random.normal(0, np.sqrt(2.0 / hidden_size), (hidden_size, output
 
 b2 = np.zeros(output_size) # weights and biasees for first to final layer
 
-# Hidden-layer forward pass
-Z1 = X_train @ W1 + b1 #Matrix multiplication and addition of biases
-A1 = np.maximum(0, Z1) #Z1 after ReLU
-
-# Second-layer forward pass: produce one raw score for each digit
-scores = A1 @ W2 + b2
-
 def softmax(scores):
     probabilities = np.zeros_like(scores)
 
@@ -80,40 +73,48 @@ def softmax(scores):
         #updates for each image_number the probabilities of each digit in the array
 
     return probabilities
+for step in range(0,step_count,1):
+        # Hidden-layer forward pass
+    Z1 = X_train @ W1 + b1 #Matrix multiplication and addition of biases
+    A1 = np.maximum(0, Z1) #Z1 after ReLU
+    
+    # Second-layer forward pass: produce one raw score for each digit
+    scores = A1 @ W2 + b2 
+    
+    # Convert the 10 raw scores into 10 probabilities
+    P = softmax(scores)
+    
+    # Create one-hot target rows for the correct digit of each image
+    target_values = np.zeros_like(P)
+    
+    for image_number in range(0, y_train.shape[0], 1):
+        correct_digit = y_train[image_number]
+        target_values[image_number][correct_digit] = 1
+    
+    total_loss = 0
+    
+    for image_number in range(0, y_train.shape[0], 1):
+        correct_digit = y_train[image_number]
+        correct_probability = P[image_number][correct_digit]
+        correct_probability = max(correct_probability, 1e-12)
+        image_loss = -np.log(correct_probability)
+        total_loss = total_loss + image_loss
+    
+    loss = total_loss / y_train.shape[0]
+    
+    # With softmax and cross-entropy, this is the gradient of the average loss
+    # with respect to the raw output scores.
+    d_scores = (P - target_values) / y_train.shape[0]
+    
+    # Gradients for the second layer
+    dW2 = A1.T @ d_scores
+    db2 = np.sum(d_scores, axis=0)
+    # Move the gradient backward into the hidden layer
+    dA1 = d_scores @ W2.T
+    # ReLU derivative
+    dZ1 = dA1 * (Z1 > 0)
+    # Gradients for the first layer
+    dW1 = X_train.T @ dZ1
+    db1 = np.sum(dZ1, axis=0)
 
-
-# Convert the 10 raw scores into 10 probabilities
-P = softmax(scores)
-
-# Create one-hot target rows for the correct digit of each image
-target_values = np.zeros_like(P)
-
-for image_number in range(0, y_train.shape[0], 1):
-    correct_digit = y_train[image_number]
-    target_values[image_number][correct_digit] = 1
-
-total_loss = 0
-
-for image_number in range(0, y_train.shape[0], 1):
-    correct_digit = y_train[image_number]
-    correct_probability = P[image_number][correct_digit]
-    correct_probability = max(correct_probability, 1e-12)
-    image_loss = -np.log(correct_probability)
-    total_loss = total_loss + image_loss
-
-loss = total_loss / y_train.shape[0]
-
-# With softmax and cross-entropy, this is the gradient of the average loss
-# with respect to the raw output scores.
-d_scores = (P - target_values) / y_train.shape[0]
-
-# Gradients for the second layer
-dW2 = A1.T @ d_scores
-db2 = np.sum(d_scores, axis=0)
-# Move the gradient backward into the hidden layer
-dA1 = d_scores @ W2.T
-# ReLU derivative
-dZ1 = dA1 * (Z1 > 0)
-# Gradients for the first layer
-dW1 = X_train.T @ dZ1
-db1 = np.sum(dZ1, axis=0)
+        
