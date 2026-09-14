@@ -13,10 +13,10 @@ X = images.reshape(images.shape[0], 64)
 X = X / 16.0
 
 # Keep the original digit labels: 0 through 9
-y = correct_value.astype(int) # ensure that correct_value is an integer, more of a safety feature here, code would work regardless
+correct_digits = correct_value.astype(int) # ensure that correct_value is an integer, more of a safety feature here, code would work regardless
 
 for digit in range(0, 10, 1):
-    print(f"Number of digit {digit} images:", np.sum(y == digit))
+    print(f"Number of digit {digit} images:", np.sum(correct_digits == digit))
      #THIS PIECE of code lines 1-30 loads the digits dataset, converts into a 64 pixel value array and labels each image with its correct output value
 
 # Create a repeatable random shuffle of the dataset rows
@@ -25,18 +25,18 @@ shuffled_index = random_seq.permutation(X.shape[0])
 
 # Shuffle images and their matching answers in the same order
 X = X[shuffled_index]
-y = y[shuffled_index]
+correct_digits = correct_digits[shuffled_index]
 
 # Use 80% of the data for training and the remaining 20% for testing
 split_index = int(0.8 * X.shape[0])
 
 X_train = X[:split_index]
-y_train = y[:split_index]
+correct_digits_train = correct_digits[:split_index]
 
 # X[1437:] means rows 1437 through the end.
 # Since there are 1797 images, this is the last 360 images, approximately 20%.
 X_test = X[split_index:]
-y_test = y[split_index:]
+correct_digits_test = correct_digits[split_index:]
 
 # Define the network size
 input_size = X_train.shape[1]   # 64 pixels
@@ -73,6 +73,3 @@ def softmax(scores):
         #updates for each image_number the probabilities of each digit in the array
 
     return probabilities
-
-
-
