@@ -152,3 +152,16 @@ db2 = np.sum(d_scores, axis=0)
 
 print("dW2 shape:", dW2.shape)
 print("db2 shape:", db2.shape)
+
+# Move the gradient backward into the hidden layer
+dA1 = d_scores @ W2.T
+
+# ReLU derivative
+dZ1 = dA1 * (Z1 > 0)
+
+# Gradients for the first layer
+dW1 = X_train.T @ dZ1
+db1 = np.sum(dZ1, axis=0)
+
+print("dW1 shape:", dW1.shape)
+print("db1 shape:", db1.shape)
