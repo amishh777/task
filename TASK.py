@@ -117,10 +117,3 @@ dZ1 = dA1 * (Z1 > 0)
 # Gradients for the first layer
 dW1 = X_train.T @ dZ1
 db1 = np.sum(dZ1, axis=0)
-# Move the gradient backward into the hidden layer
-dA1 = d_scores @ W2.T
-# Apply the ReLU derivative
-dZ1 = dA1 * (Z1 > 0)
-# Calculate gradients for the first layer
-dW1 = X_train.T @ dZ1
-db1 = np.sum(dZ1, axis=0)
