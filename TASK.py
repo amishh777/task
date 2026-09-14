@@ -73,7 +73,12 @@ def softmax(scores):
         #updates for each image_number the probabilities of each digit in the array
 
     return probabilities
-for step in range(0,step_count,1):
+
+#training settings
+number_of_steps= 1000
+learning rate=0.1
+
+for step in range(0,number_of_steps,1):
         # Hidden-layer forward pass
     Z1 = X_train @ W1 + b1 #Matrix multiplication and addition of biases
     A1 = np.maximum(0, Z1) #Z1 after ReLU
@@ -116,5 +121,8 @@ for step in range(0,step_count,1):
     # Gradients for the first layer
     dW1 = X_train.T @ dZ1
     db1 = np.sum(dZ1, axis=0)
-
-        
+    W1 = W1 - learning_rate * dW1
+    b1 = b1 - learning_rate * db1
+    
+    W2 = W2 - learning_rate * dW2
+    b2 = b2 - learning_rate * db2
