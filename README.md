@@ -14,7 +14,7 @@ This would run the neural network, User will be prompted via "Print accuracy on 
 type y or Y if you wish to see the training accuracy data, type N or n if you wish to see the final test accuracy directly
 
 
-Type "test_gradients.py" in a software like vs code after moving to the correct directory with the code file in it
+Type "python test_gradients.py" in a software like vs code after moving to the correct directory with the code file in it
 This would show both the manual and numerical grdients and show check pass or failed
 User can edit lines 115-117 if they wish to compare a different data in the array, by default it is at row=0, column=0
 
