@@ -73,6 +73,8 @@ def softmax(scores):
         #updates for each image_number the probabilities of each digit in the array
 
     return probabilities
+#copied from task.py uptill here
+
 
 def calculate_loss(probabilities, correct_digits):
     total_loss = 0
@@ -87,7 +89,6 @@ def calculate_loss(probabilities, correct_digits):
         total_loss = total_loss + image_loss
 
     return total_loss / correct_digits.shape[0]
-
 
 # Use a small batch for gradient checking
 pixel_digit_check = pixel_digit_train[:20].copy()
@@ -107,19 +108,16 @@ for image_number in range(0, correct_digits_check.shape[0], 1):
     correct_digit = correct_digits_check[image_number]
     target_values[image_number][correct_digit] = 1
 
-
 # Manual gradient
 d_scores = (P - target_values) / correct_digits_check.shape[0]
 dW2 = A1.T @ d_scores
 
-
-# Select one W2 weight
+# Select W2[][]
 row = 0
 column = 0
 small_change = 0.00001
 
 original_value = W2[row][column]
-
 
 # Calculate loss after increasing the weight
 W2[row][column] = original_value + small_change
@@ -128,7 +126,6 @@ scores_plus = A1 @ W2 + b2
 P_plus = softmax(scores_plus)
 loss_plus = calculate_loss(P_plus, correct_digits_check)
 
-
 # Calculate loss after decreasing the weight
 W2[row][column] = original_value - small_change
 
@@ -136,16 +133,11 @@ scores_minus = A1 @ W2 + b2
 P_minus = softmax(scores_minus)
 loss_minus = calculate_loss(P_minus, correct_digits_check)
 
-
 # Restore the original weight
 W2[row][column] = original_value
 
-
 # Calculate the numerical gradient
-numerical_gradient = (
-    loss_plus - loss_minus
-) / (2 * small_change)
-
+numerical_gradient = (loss_plus - loss_minus) / (2 * small_change)
 
 # Get the manual gradient
 manual_gradient = dW2[row][column]
@@ -153,8 +145,7 @@ manual_gradient = dW2[row][column]
 print("Manual gradient:", manual_gradient)
 print("Numerical gradient:", numerical_gradient)
 
-
-if abs(numerical_gradient-manual_gradient < 0.0000001)
+if abs(numerical_gradient-manual_gradient) < 0.0000001:
     print("Gradient check passed")
 else:
     print("Gradient check failed")
