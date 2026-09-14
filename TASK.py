@@ -51,15 +51,15 @@ y_test = y[split_index:]
 print("\nTraining input shape:", X_train.shape)
 print("Training answer shape:", y_train.shape)
 print("Testing input shape:", X_test.shape)
-print("Testing answer shape:", y_test.shape) # line 47-50 just to make sure arrays for inputs and outputs are in correct dimensions
+print("Testing answer shape:", y_test.shape)
 
 # Define the network size
 input_size = X_train.shape[1]   # 64 pixels
-hidden_size = 32                # 32 hidden neurons (layer1)
-output_size = 10                # digits 0 through 9 (output layer)
+hidden_size = 32                # 32 hidden neurons
+output_size = 10                # digits 0 through 9
 
 # Create random values for the weights associated with each neuron to pixel link
-parameter_random = np.random.default_rng(123) # the arguement '123' is used for reproducability of the reuslt obtained
+parameter_random = np.random.default_rng(123)
 
 W1 = parameter_random.normal(0, np.sqrt(2.0 / input_size),(input_size, hidden_size))
 
@@ -83,7 +83,7 @@ print("\nHidden-layer output shapes:")
 print("Z1:", Z1.shape)
 print("A1 after ReLU:", A1.shape)
 
-#score associated with each neuron in output layer, will be later converted into probability
+# Second-layer forward pass: produce one raw score for each digit
 scores = A1 @ W2 + b2
 
 print("\nOutput score shape:")
@@ -91,7 +91,7 @@ print("scores:", scores.shape)
 
 
 def softmax(scores):
-    probabilities = np.zeros_like(scores) # defining an array with same dimension as 'scores'
+    probabilities = np.zeros_like(scores)
 
     for image_number in range(0, scores.shape[0], 1):
         current_scores = scores[image_number]
@@ -99,15 +99,15 @@ def softmax(scores):
         biggest_score = np.max(current_scores)
         shifted_scores = current_scores - biggest_score
 
-        exponential_scores = np.exp(shifted_scores)
+        exponential_scores = np.exp(shifted_scores)   
         # all shifted scores to e^shifted_scores
-        
-        total = np.sum(exponential_scores)
+
+        total = np.sum(exponential_scores) 
         # sum of all exponential scores for this image
-        
+
         probabilities[image_number] = exponential_scores / total
         #updates for each image_number the probabilities of each digit in the array
-    
+
     return probabilities
 
 
@@ -115,18 +115,18 @@ def softmax(scores):
 P = softmax(scores)
 
 print("\nProbability shape:")
-print("P:", P.shape) # verifying matrix dimesnions
+print("P:", P.shape) 
 print("First probability row:", P[0]) 
 print("First row total:", np.sum(P[0])) # to verify if probabilty function is working coorectly
 
-total_loss = 0
+total_loss = 0 # defining the total loss variable to be used in the for loop below
 
 for image_number in range(0, y_train.shape[0], 1):
-    correct_digit = y_train[image_number]
-    correct_probability = P[image_number][correct_digit]
-    image_loss = -np.log(correct_probability)
+    correct_digit = y_train[image_number]    # stores correct digit assictaed w each img number
+    correct_probability = P[image_number][correct_digit] # stores probability of the correct digit for each image number
+    image_loss = -np.log(correct_probability) 
     total_loss = total_loss + image_loss
 
 loss = total_loss / y_train.shape[0]
-
+#average loss over all training images
 print("Loss:", loss)
