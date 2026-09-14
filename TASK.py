@@ -139,9 +139,16 @@ loss = total_loss / y_train.shape[0]
 
 print("Loss:", loss)
 
-# With softmax and cross-entropy, this is the gradient of the loss
+# With softmax and cross-entropy, this is the gradient of the average loss
 # with respect to the raw output scores.
-d_scores = P - target_values
+d_scores = (P - target_values) / y_train.shape[0]
 
 print("d_scores shape:", d_scores.shape)
 print("First score-gradient row:", d_scores[0])
+
+# Gradients for the second layer
+dW2 = A1.T @ d_scores
+db2 = np.sum(d_scores, axis=0)
+
+print("dW2 shape:", dW2.shape)
+print("db2 shape:", db2.shape)
