@@ -118,3 +118,15 @@ print("\nProbability shape:")
 print("P:", P.shape) # verifying matrix dimesnions
 print("First probability row:", P[0]) 
 print("First row total:", np.sum(P[0])) # to verify if probabilty function is working coorectly
+
+total_loss = 0
+
+for image_number in range(0, y_train.shape[0], 1):
+    correct_digit = y_train[image_number]
+    correct_probability = P[image_number][correct_digit]
+    image_loss = -np.log(correct_probability)
+    total_loss = total_loss + image_loss
+
+loss = total_loss / y_train.shape[0]
+
+print("Loss:", loss)
