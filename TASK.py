@@ -119,15 +119,29 @@ print("P:", P.shape)
 print("First probability row:", P[0]) 
 print("First row total:", np.sum(P[0])) # to verify if probabilty function is working coorectly
 
+# Create one-hot target rows for the correct digit of each image
+target_values = np.zeros_like(P)
+
+for image_number in range(0, y_train.shape[0], 1):
+    correct_digit = y_train[image_number]
+    target_values[image_number][correct_digit] = 1
+
 total_loss = 0
 
 for image_number in range(0, y_train.shape[0], 1):
-    for digit in range(0, output_size, 1):
-        difference = P[image_number][digit] - target_values[image_number][digit]
-        total_loss = total_loss + difference ** 2
+    correct_digit = y_train[image_number]
+    correct_probability = P[image_number][correct_digit]
+    correct_probability = max(correct_probability, 1e-12)
+    image_loss = -np.log(correct_probability)
+    total_loss = total_loss + image_loss
 
 loss = total_loss / y_train.shape[0]
 
 print("Loss:", loss)
 
-d_probabilities = 2(P - target_values)
+# With softmax and cross-entropy, this is the gradient of the loss
+# with respect to the raw output scores.
+d_scores = P - target_values
+
+print("d_scores shape:", d_scores.shape)
+print("First score-gradient row:", d_scores[0])
