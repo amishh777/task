@@ -1,6 +1,6 @@
 from sklearn.datasets import load_digits
 import numpy as np
-
+answer = input("Print accuracy on training iterations? (y/n): ").lower() 
 digits = load_digits()
 
 images = digits.images #assigns each pixel a value
@@ -126,11 +126,13 @@ for step in range(0,number_of_steps,1):
     
     W2 = W2 - learning_rate * dW2
     b2 = b2 - learning_rate * db2
-    if step % 67 == 0:
+
+    if step % 67 == 0 and answer == "y":
         predicted_digits = np.argmax(P, axis=1)
         correct_predictions = np.sum(predicted_digits == y_train)
         training_accuracy = correct_predictions / y_train.shape[0]
         print("Step:", step, "Training accuracy:", training_accuracy)
+
 #Testing phase;( project' almost over😊, sparked a lot of interest in ML, thx:)
 Z1_test = X_test @ W1 + b1
 A1_test = np.maximum(0, Z1_test)
@@ -145,6 +147,4 @@ test_accuracy = correct_predictions / y_test.shape[0]
 print("Test accuracy:", test_accuracy)
 
 
-# end of task, I will try to use mnsit dataset and add another hidden layer in a branch and maybe pull it into main if i am done in time
-
-
+# end of task, I will try to use mnsit dataset and add another hidden layer in a branch and maybe pull it into main if i am done in ti
