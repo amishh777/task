@@ -126,3 +126,8 @@ for step in range(0,number_of_steps,1):
     
     W2 = W2 - learning_rate * dW2
     b2 = b2 - learning_rate * db2
+    if step % 67 == 0:
+        predicted_digits = np.argmax(P, axis=1)
+        correct_predictions = np.sum(predicted_digits == y_train)
+        training_accuracy = correct_predictions / y_train.shape[0]
+        print("Step:", step, "Training accuracy:", training_accuracy)
