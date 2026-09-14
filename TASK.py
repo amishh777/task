@@ -76,7 +76,7 @@ def softmax(scores):
 
 #training settings
 number_of_steps= 1000
-learning rate=0.1
+learning_rate=0.1
 
 for step in range(0,number_of_steps,1):
         # Hidden-layer forward pass
