@@ -13,10 +13,10 @@ X = images.reshape(images.shape[0], 64)
 X = X / 16.0
 
 # Keep the original digit labels: 0 through 9
-y = correct_value.astype(int) # ensure that correct_value is an integer, more of a safety feature here, code would work regardless
+correct_digits = correct_value.astype(int) # ensure that correct_value is an integer, more of a safety feature here, code would work regardless
 
 for digit in range(0, 10, 1):
-    print(f"Number of digit {digit} images:", np.sum(y == digit))
+    print(f"Number of digit {digit} images:", np.sum(correct_digits == digit))
      #THIS PIECE of code lines 1-30 loads the digits dataset, converts into a 64 pixel value array and labels each image with its correct output value
 
 # Create a repeatable random shuffle of the dataset rows
@@ -25,18 +25,18 @@ shuffled_index = random_seq.permutation(X.shape[0])
 
 # Shuffle images and their matching answers in the same order
 X = X[shuffled_index]
-y = y[shuffled_index]
+correct_digits = correct_digits[shuffled_index]
 
 # Use 80% of the data for training and the remaining 20% for testing
 split_index = int(0.8 * X.shape[0])
 
 X_train = X[:split_index]
-y_train = y[:split_index]
+correct_digits_train = correct_digits[:split_index]
 
 # X[1437:] means rows 1437 through the end.
 # Since there are 1797 images, this is the last 360 images, approximately 20%.
 X_test = X[split_index:]
-y_test = y[split_index:]
+correct_digits_test = correct_digits[split_index:]
 
 # Define the network size
 input_size = X_train.shape[1]   # 64 pixels
@@ -92,24 +92,24 @@ for step in range(0,number_of_steps,1):
     # Create one-hot target rows for the correct digit of each image
     target_values = np.zeros_like(P)
     
-    for image_number in range(0, y_train.shape[0], 1):
-        correct_digit = y_train[image_number]
+    for image_number in range(0, correct_digits_train.shape[0], 1):
+        correct_digit = correct_digits_train[image_number]
         target_values[image_number][correct_digit] = 1
     
     total_loss = 0
     
-    for image_number in range(0, y_train.shape[0], 1):
-        correct_digit = y_train[image_number]
+    for image_number in range(0, correct_digits_train.shape[0], 1):
+        correct_digit = correct_digits_train[image_number]
         correct_probability = P[image_number][correct_digit]
         correct_probability = max(correct_probability, 1e-12)
         image_loss = -np.log(correct_probability)
         total_loss = total_loss + image_loss
     
-    loss = total_loss / y_train.shape[0]
+    loss = total_loss / correct_digits_train.shape[0]
     
     # With softmax and cross-entropy, this is the gradient of the average loss
     # with respect to the raw output scores.
-    d_scores = (P - target_values) / y_train.shape[0]
+    d_scores = (P - target_values) / correct_digits_train.shape[0]
     
     # Gradients for the second layer
     dW2 = A1.T @ d_scores
@@ -129,8 +129,8 @@ for step in range(0,number_of_steps,1):
 
     if step % 67 == 0 and answer == "y":
         predicted_digits = np.argmax(P, axis=1)
-        correct_predictions = np.sum(predicted_digits == y_train)
-        training_accuracy = correct_predictions / y_train.shape[0]
+        correct_predictions = np.sum(predicted_digits == correct_digits_train)
+        training_accuracy = correct_predictions / correct_digits_train.shape[0]
         print("Step:", step, "Training accuracy:", training_accuracy)
 
 #Testing phase;( project' almost over😊, sparked a lot of interest in ML, thx:)
@@ -141,8 +141,8 @@ scores_test = A1_test @ W2 + b2
 P_test = softmax(scores_test)
 
 predicted_digits = np.argmax(P_test, axis=1)
-correct_predictions = np.sum(predicted_digits == y_test)
-test_accuracy = correct_predictions / y_test.shape[0]
+correct_predictions = np.sum(predicted_digits == correct_digits_test)
+test_accuracy = correct_predictions / correct_digits_test.shape[0]
 
 print("Test accuracy:", test_accuracy)
 
