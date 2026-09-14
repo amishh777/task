@@ -1,6 +1,5 @@
 from sklearn.datasets import load_digits
 import numpy as np
-answer = input("Print accuracy on training iterations? (y/n): ").lower() 
 digits = load_digits()
 
 images = digits.images #assigns each pixel a value
