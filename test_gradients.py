@@ -7,10 +7,10 @@ images = digits.images #assigns each pixel a value
 correct_value = digits.target # conatins correct output associated w each img
 
 # Convert each 8x8 image into 64 pixel values
-X = images.reshape(images.shape[0], 64)
+pixel_digit = images.reshape(images.shape[0], 64)
 
 # Scale pixel values from 0-16 to 0-1
-X = X / 16.0
+pixel_digit = pixel_digit / 16.0
 
 # Keep the original digit labels: 0 through 9
 correct_digits = correct_value.astype(int) # ensure that correct_value is an integer, more of a safety feature here, code would work regardless
@@ -21,25 +21,25 @@ for digit in range(0, 10, 1):
 
 # Create a repeatable random shuffle of the dataset rows
 random_seq = np.random.default_rng(42)
-shuffled_index = random_seq.permutation(X.shape[0])
+shuffled_index = random_seq.permutation(pixel_digit.shape[0])
 
 # Shuffle images and their matching answers in the same order
-X = X[shuffled_index]
+pixel_digit = pixel_digit[shuffled_index]
 correct_digits = correct_digits[shuffled_index]
 
 # Use 80% of the data for training and the remaining 20% for testing
-split_index = int(0.8 * X.shape[0])
+split_index = int(0.8 * pixel_digit.shape[0])
 
-X_train = X[:split_index]
+pixel_digit_train = pixel_digit[:split_index]
 correct_digits_train = correct_digits[:split_index]
 
-# X[1437:] means rows 1437 through the end.
+# pixel_digit[1437:] means rows 1437 through the end.
 # Since there are 1797 images, this is the last 360 images, approximately 20%.
-X_test = X[split_index:]
+pixel_digit_test = pixel_digit[split_index:]
 correct_digits_test = correct_digits[split_index:]
 
 # Define the network size
-input_size = X_train.shape[1]   # 64 pixels
+input_size = pixel_digit_train.shape[1]   # 64 pixels
 hidden_size = 32                # 32 hidden neurons
 output_size = 10                # digits 0 through 9
 
@@ -73,3 +73,7 @@ def softmax(scores):
         #updates for each image_number the probabilities of each digit in the array
 
     return probabilities
+
+
+
+# end of task, I will try to use mnsit dataset and add another hidden layer in a branch and maybe pull it into main if i am done in ti
