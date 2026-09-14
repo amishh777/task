@@ -130,4 +130,4 @@ loss = total_loss / y_train.shape[0]
 
 print("Loss:", loss)
 
-d_probabilities = P - target_values
+d_probabilities = 2(P - target_values)
