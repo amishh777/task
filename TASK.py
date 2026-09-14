@@ -130,3 +130,16 @@ for image_number in range(0, y_train.shape[0], 1):
 loss = total_loss / y_train.shape[0]
 #average loss over all training images
 print("Loss:", loss)
+
+d_scores = P.copy()
+
+for image_number in range(0, y_train.shape[0], 1):
+    correct_digit = y_train[image_number]
+    d_scores[image_number][correct_digit] = (
+        d_scores[image_number][correct_digit] - 1
+    )
+
+d_scores = d_scores / y_train.shape[0]
+
+print("d_scores shape:", d_scores.shape)
+print("First d_scores row:", d_scores[0])
