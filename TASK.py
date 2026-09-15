@@ -100,9 +100,9 @@ for step in range(0,number_of_steps,1):
     
     for image_number in range(0, correct_digits_train.shape[0], 1):
         correct_digit = correct_digits_train[image_number]
-        correct_probability = P[image_number][correct_digit]
-        correct_probability = max(correct_probability, 1e-12)
-        image_loss = -np.log(correct_probability)
+        correct_digit_probability = P[image_number][correct_digit]
+        correct_digit_probability = max(correct_digit_probability, 1e-12)
+        image_loss = -np.log(correct_digit_probability)
         total_loss = total_loss + image_loss
     
     loss = total_loss / correct_digits_train.shape[0]

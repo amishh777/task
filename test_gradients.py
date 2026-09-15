@@ -81,10 +81,10 @@ def calculate_loss(probabilities, correct_digits):
     for image_number in range(0, correct_digits.shape[0], 1):
         correct_digit = correct_digits[image_number]
 
-        correct_probability = probabilities[image_number][correct_digit]
-        correct_probability = max(correct_probability, 1e-12)
+        correct_digit_probability = probabilities[image_number][correct_digit]
+        correct_digit_probability = max(correct_digit_probability, 1e-12)
 
-        image_loss = -np.log(correct_probability)
+        image_loss = -np.log(correct_digit_probability)
         total_loss = total_loss + image_loss
 
     return total_loss / correct_digits.shape[0]
