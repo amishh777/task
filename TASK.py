@@ -47,7 +47,7 @@ output_size = 10                # digits 0 through 9
 parameter_random = np.random.default_rng(123)
 
 W1 = parameter_random.normal(0, np.sqrt(2.0 / input_size),(input_size, hidden_size))
-
+  # the parameters include(mean, SD,shape), we use SD 0 to have weights randomly distributed
 b1 = np.zeros(hidden_size) # weights and biases for pixels to first layer of neurons
 
 W2 = parameter_random.normal(0, np.sqrt(2.0 / hidden_size), (hidden_size, output_size))
@@ -107,8 +107,7 @@ for step in range(0,number_of_steps,1):
     
     loss = total_loss / correct_digits_train.shape[0]
     
-    # With softmax and cross-entropy, this is the gradient of the average loss
-    # with respect to the raw output scores.
+    # With softmax and cross-entropy, this is the gradient of the average loss with respect to the raw output scores.
     d_scores = (P - target_values) / correct_digits_train.shape[0]
     
     # Gradients for the second layer
@@ -118,7 +117,7 @@ for step in range(0,number_of_steps,1):
     dA1 = d_scores @ W2.T
     # ReLU derivative
     dZ1 = dA1 * (Z1 > 0)
-    # Gradients for the first layer
+    # adjust weights and biases based on gradients obtained
     dW1 = pixel_digit_train.T @ dZ1
     db1 = np.sum(dZ1, axis=0)
     W1 = W1 - learning_rate * dW1
@@ -128,7 +127,7 @@ for step in range(0,number_of_steps,1):
     b2 = b2 - learning_rate * db2
 
     if step % 67 == 0 and answer == "y":
-        predicted_digits = np.argmax(P, axis=1)
+        predicted_digits = np.argmax(P, axis=1) # contains digit predicted w maximum probablty for each img
         correct_predictions = np.sum(predicted_digits == correct_digits_train)
         training_accuracy = correct_predictions / correct_digits_train.shape[0]
         print("Step:", step, "Training accuracy:", training_accuracy)
