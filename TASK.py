@@ -108,7 +108,7 @@ for step in range(0,number_of_steps,1):
     loss = total_loss / correct_digits_train.shape[0]
     
     # With softmax and cross-entropy, this is the gradient of the average loss with respect to the raw output scores.
-    d_scores = (P - target_values) / correct_digits_train.shape[0]
+    d_scores = (P - target_values) / correct_digits_train.shape[0]  ;# This is equal to the gradient d(loss)/d(scoress)
     
     # Gradients for the second layer
     dW2 = A1.T @ d_scores
