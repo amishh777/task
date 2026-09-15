@@ -58,7 +58,9 @@ The numerical gradient is calculated by slightly increasing and decreasing one w
 numerical gradient = (loss_plus - loss_minus) / (2 × small_change)
 ```
 Manual gradient: 0.020583038123039573
+
 Numerical gradient: 0.020583038140564724
+
 Gradient check passed
 The values are very close, which indicates that the manual gradient calculation is correct.
 
