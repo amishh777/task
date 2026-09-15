@@ -98,3 +98,15 @@ Gradient check passed
 The values are very close, which indicates that the manual gradient calculation is correct.
 
 ## 8: Problems encountered
+At first, I found it difficult to understand the difference between `P`, the loss, and the gradients. I initially thought that `d_scores` was the same as a weight gradient. I later understood that `d_scores` is the gradient with respect to the raw output scores, which is then used to calculate `dW2`, `db2`, `dW1`, and `db1`.
+
+I also tried using mean squared error, but its derivative became difficult to follow when combined with softmax. I changed to cross-entropy loss because it is commonly used for classification and gives the simpler gradient:
+
+```python
+d_scores = (P - target_values) / correct_digits_train.shape[0]
+```
+Another mistake was putting the weight updates outside the training loop. In that case, the weights would only change once. I fixed this by putting the forward pass, loss calculation, gradient calculation, and parameter updates inside the loop.
+
+I also had a hard time understanding backpropagation because the derivative from one layer has to be passed back to the previous layer. Each layer receives the gradient from the layer after it, modifies it according to its own operation, and passes the result backward. The process initially looked like many unrelated variables, but I eventually understood that they represent the gradient at different stages of the same network.
+
+The numerical gradient check helped me confirm that my manual gradient calculations were correct.
