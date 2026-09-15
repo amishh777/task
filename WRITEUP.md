@@ -29,3 +29,17 @@ scores is the raw score associated with each neuron in the output layer
 scores = A1 @ W2 + b2
 ```
 This score is now passed into softmax function which converts scores to probabilty
+
+## 4. Loss Function
+I used cross-entropy loss, loss depends on probabilty associated with each digit as:
+```python
+image_loss = -np.log(correct_digit_probability)
+```
+The losses are averaged over all training images.
+I tried switching to mean square error for loss function, but it made understanding code very difficult for me as it involved creating one-hot y array which seemed like a lot of un necessary work
+
+Softmax along with cross entropy made the derivative relatively simpler to understand
+d_scores = ∂Loss/∂scores which is equal to:
+```python
+d_scores = (P - target_values) / correct_digits_train.shape[0]
+```
