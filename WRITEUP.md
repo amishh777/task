@@ -43,3 +43,23 @@ d_scores = ∂Loss/∂scores which is equal to:
 ```python
 d_scores = (P - target_values) / correct_digits_train.shape[0]
 ```
+
+## 5: Manual backropogation
+
+## 6:Training and Testing
+The model trains using the 1,437 training images. The weights are updated each iteration across 80% of dataset and 
+the 20% testing images are not used during training. They are used afterward to measure how well the model works on unseen data.
+The final test accuracy was: 99.4%
+
+## 7. Gradient Check
+I created test_gradients.py to compare a manually calculated gradient with a numerical gradient.
+The numerical gradient is calculated by slightly increasing and decreasing one weight:
+```python
+numerical gradient = (loss_plus - loss_minus) / (2 × small_change)
+```
+Manual gradient: 0.020583038123039573
+Numerical gradient: 0.020583038140564724
+Gradient check passed
+The values are very close, which indicates that the manual gradient calculation is correct.
+
+## 8: Problems encountered
