@@ -44,7 +44,40 @@ d_scores = ∂Loss/∂scores which is equal to:
 d_scores = (P - target_values) / correct_digits_train.shape[0]
 ```
 
-## 5: Manual backropogation
+## 5. Manual Backpropagation
+
+After calculating the loss, I calculated the gradients manually using the chain rule.
+
+The first gradient is with respect to the raw output scores:
+
+```python
+d_scores = (P - target_values) / correct_digits_train.shape[0]
+```
+The output-layer weight gradient is calculated using:
+```python
+dW2 = A1.T @ d_scores
+```
+dW2 tells us how much each weight connecting the hidden layer to the output layer contributed to the loss.
+The output-layer bias gradient is:
+```python
+db2 = np.sum(d_scores, axis=0)
+```
+The gradient is then moved backward into the hidden layer:
+```python
+dA1 = d_scores @ W2.T
+```
+Since the hidden layer uses ReLU, its derivative is applied using:
+```python
+dZ1 = dA1 * (Z1 > 0)
+```
+this makes dz1 very easy to calculate and gives output which I explained in the beginning.
+
+Finally, the gradients for the first layer are calculated:
+```python
+dW1 = pixel_digit_train.T @ dZ1
+db1 = np.sum(dZ1, axis=0)
+```
+The weights and biases are then updated using gradient descent, these calculations are repeated inside the training loop. The updated parameters are used during the next iteration.
 
 ## 6:Training and Testing
 The model trains using the 1,437 training images. The weights are updated each iteration across 80% of dataset and 
